@@ -7,10 +7,13 @@ import {
 	PointElement,
 	LineElement,
 	ChartOptions,
+	CoreScaleOptions,
+	Scale,
 } from 'chart.js';
 import {Line} from 'react-chartjs-2';
 import {random, useVideoConfig} from 'remotion';
 import moment from 'moment';
+import {checkWestgardViolations} from '../utils/westgard';
 
 ChartJS.register(Title, CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -47,11 +50,6 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 	const {width, height} = useVideoConfig();
 	const average = (random(chart_id) * 100) % 100;
 	const SD = average / 5;
-	const labels = [...Array(8)].map((i) =>
-		moment(randomDate(chart_id + i))
-			.format('DD/MM/YY')
-			.toLocaleString()
-	);
 	const values = [average].concat(
 		[...Array(7)].map((_, i) => {
 			return (
@@ -59,6 +57,15 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 				100
 			);
 		})
+	);
+	let violations = checkWestgardViolations(values, SD);
+	const labels = [...Array(8)].map(
+		(_, i) =>
+			moment(randomDate(chart_id + i))
+				.format('DD/MM/YY')
+				.toLocaleString() +
+			';' +
+			violations.at(i)
 	);
 	const title = titles.at((random(chart_id) * titles.length) % 10);
 
@@ -85,9 +92,35 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 					ticks: {
 						minRotation: 0,
 						maxRotation: 90,
+						callback: function (
+							this: Scale<CoreScaleOptions>,
+							tickValue: string | number
+						) {
+							let value = Number(tickValue);
+							let label = this.getLabelForValue(value);
+							return label.split(';')[0];
+						},
 					},
 					grid: {
 						display: false,
+					},
+				},
+				xAxisViolations: {
+					type: 'category',
+					grid: {drawOnChartArea: false},
+					ticks: {
+						callback: function (
+							this: Scale<CoreScaleOptions>,
+							tickValue: string | number
+						) {
+							let value = Number(tickValue);
+							let label = this.getLabelForValue(value);
+							return label.split(';')[1];
+						},
+						color: '#c62828',
+						font: {
+							size: 15,
+						},
 					},
 				},
 				y: {
