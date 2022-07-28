@@ -1,4 +1,8 @@
-export const checkWestgardViolations = (values: number[], sd: number) => {
+export const checkWestgardViolations = (
+	values: number[],
+	average: number,
+	sd: number
+) => {
 	// if two consecutive numbers exceed 2S
 	// if difference between two consecutive numbers is greater/equal to 3S
 	// if one of the two consecutive numbers is over 2S and other is lower than -2S
@@ -6,8 +10,6 @@ export const checkWestgardViolations = (values: number[], sd: number) => {
 	// if eight consecutive numbers form a trend
 
 	let violations: string[] = [];
-
-	let average = values[0];
 
 	let plusSdCounter = 0;
 	let minusSdCounter = 0;

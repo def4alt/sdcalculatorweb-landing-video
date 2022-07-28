@@ -48,7 +48,7 @@ export const Card: React.FC<{card_id: number}> = ({card_id}) => {
 			);
 		})
 	);
-	let violations = checkWestgardViolations(values, sd);
+	let violations = checkWestgardViolations(values, average, sd);
 	const labels = [...Array(8)].map(
 		(_, i) =>
 			moment(randomDate(card_id + i))
@@ -78,7 +78,7 @@ export const Card: React.FC<{card_id: number}> = ({card_id}) => {
 				<div className="card__title">{title}</div>
 			</div>
 			<div className="card__chart">
-				<Chart data={data}></Chart>
+				<Chart data={data} />
 			</div>
 		</div>
 	);
