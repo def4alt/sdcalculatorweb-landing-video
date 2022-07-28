@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {
 	Chart as ChartJS,
-	Title,
 	CategoryScale,
 	LinearScale,
 	PointElement,
@@ -11,77 +10,25 @@ import {
 	Scale,
 } from 'chart.js';
 import {Line} from 'react-chartjs-2';
-import {random, useVideoConfig} from 'remotion';
-import moment from 'moment';
-import {checkWestgardViolations} from '../utils/westgard';
 
-ChartJS.register(Title, CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-const randomDate = (id: number) => {
-	const startDate = new Date(new Date().getFullYear(), 1, 1);
-	const endDate = new Date();
-
-	return new Date(
-		startDate.getTime() + random(id) * (endDate.getTime() - startDate.getTime())
-	);
-};
-
-const titles = [
-	'Arg Lvl1',
-	'5-Oxo Pro Lvl2',
-	'Asp Lvl1',
-	'Gly Lvl2',
-	'Met Lvl1',
-	'Orn Lvl2',
-	'Tyr Lvl1',
-	'Val Lvl1',
-	'C10:1 Lvl2',
-	'C14 OH Lvl1',
-	'C16:1 Lvl1',
-	'C18:1 Lvl1',
-	'C18:1 OH Lvl2',
-	'C8 Lvl1',
-	'C2 Lvl1',
-	'Pro Lvl2',
-	'Ser Lvl2',
-];
-
-export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
-	const {width, height} = useVideoConfig();
-	const average = (random(chart_id) * 100) % 100;
-	const SD = average / 5;
-	const values = [average].concat(
-		[...Array(7)].map((_, i) => {
-			return (
-				(random(chart_id + i + 1) * (average + 3 * SD) + (average - 3 * SD)) %
-				100
-			);
-		})
-	);
-	let violations = checkWestgardViolations(values, SD);
-	const labels = [...Array(8)].map(
-		(_, i) =>
-			moment(randomDate(chart_id + i))
-				.format('DD/MM/YY')
-				.toLocaleString() +
-			';' +
-			violations.at(i)
-	);
-	const title = titles.at((random(chart_id) * titles.length) % 10);
+export const Chart: React.FC<{
+	data: {
+		values: number[];
+		labels: string[];
+		average: number;
+		sd: number;
+		width: number;
+		height: number;
+	};
+}> = ({data}) => {
+	const {values, labels, average, sd, width, height} = data;
 
 	const options: ChartOptions<'line'> = useMemo(() => {
 		return {
 			responsive: false,
 			animation: false,
-			plugins: {
-				title: {
-					display: true,
-					text: title,
-					font: {
-						size: 22,
-					},
-				},
-			},
 			datasets: {
 				line: {
 					borderWidth: 4,
@@ -124,10 +71,10 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 					},
 				},
 				y: {
-					min: average - 4 * SD,
-					max: average + 4 * SD,
+					min: average - 4 * sd,
+					max: average + 4 * sd,
 					ticks: {
-						stepSize: SD,
+						stepSize: sd,
 						callback: (tickValue: string | number) => {
 							let value = Number(tickValue);
 							if (value == average) {
@@ -136,14 +83,14 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 							return (
 								Math.floor(value * 100) / 100 +
 								', ' +
-								Math.abs(value - average) / SD +
+								Math.abs(value - average) / sd +
 								'SD'
 							);
 						},
 					},
 
 					grid: {
-						drawBorder: true,
+						drawBorder: false,
 						color: [
 							'#fffff',
 							'#e84393',
@@ -163,7 +110,7 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 		};
 	}, []);
 
-	const data = {
+	const chart_data = {
 		labels,
 		datasets: [
 			{
@@ -174,5 +121,8 @@ export const Chart: React.FC<{chart_id: number}> = ({chart_id}) => {
 			},
 		],
 	};
-	return <Line options={options} data={data} width={width} height={height} />;
+
+	return (
+		<Line options={options} data={chart_data} width={width} height={height} />
+	);
 };

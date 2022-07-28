@@ -1,0 +1,25 @@
+@import "card__chart.css";
+@import "card__title.css";
+
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
+.card {
+  position: relative;
+  margin: 30px auto;
+  height: 21rem;
+  width: 450px;
+  border-radius: 20px;
+  border: 1px solid white;
+  background: white;
+  box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px white;
+
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.2rem;
+
+}
+
+.card_red {
+  border: 1px solid #d63031;
+}

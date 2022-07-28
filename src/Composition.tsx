@@ -1,12 +1,9 @@
-import {useCurrentFrame} from 'remotion';
-import {Chart} from './components/Chart';
+import {Card} from './components/Card';
 
 export const MyComposition = () => {
-	const frame = useCurrentFrame();
-
 	return (
 		<div>
-			<Chart chart_id={1} />
+			<Card card_id={1} />
 		</div>
 	);
 };
