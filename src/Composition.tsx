@@ -1,9 +1,9 @@
-import {Card} from './components/Card';
+import {CardList} from './components/CardList';
 
 export const MyComposition = () => {
 	return (
 		<div>
-			<Card card_id={1} />
+			<CardList />
 		</div>
 	);
 };

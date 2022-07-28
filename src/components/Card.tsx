@@ -40,22 +40,38 @@ export const Card: React.FC<{card_id: number}> = ({card_id}) => {
 	const height = 250;
 	const average = (random(card_id) * 100) % 100;
 	const sd = average / 5;
-	const values = [average].concat(
-		[...Array(7)].map((_, i) => {
-			return (
-				(random(card_id + i + 1) * (average + 3 * sd) + (average - 3 * sd)) %
-				100
-			);
-		})
+	const amount = 8;
+	console.log(amount);
+	const values = useMemo(
+		() =>
+			[average].concat(
+				[...Array(amount - 1)].map((_, i) => {
+					return (
+						(random(card_id + i + 1) * (average + 3 * sd) +
+							(average - 2 * sd)) %
+						100
+					);
+				})
+			),
+		[average, sd]
 	);
-	let violations = checkWestgardViolations(values, average, sd);
-	const labels = [...Array(8)].map(
-		(_, i) =>
-			moment(randomDate(card_id + i))
-				.format('DD/MM/YY')
-				.toLocaleString() +
-			';' +
-			violations.at(i)
+
+	let violations = useMemo(
+		() => checkWestgardViolations(values, average, sd),
+		[values, average, sd]
+	);
+
+	const labels = useMemo(
+		() =>
+			[...Array(amount)].map(
+				(_, i) =>
+					moment(randomDate(card_id + i))
+						.format('DD/MM/YY')
+						.toLocaleString() +
+					';' +
+					violations.at(i)
+			),
+		[violations]
 	);
 	const title = titles.at((random(card_id) * titles.length) % 10);
 

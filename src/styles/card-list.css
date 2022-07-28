@@ -1,0 +1,9 @@
+.card-list {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+  position: relative;
+  justify-content: space-around;
+  background-color: white;
+}

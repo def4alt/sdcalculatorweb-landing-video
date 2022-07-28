@@ -83,7 +83,7 @@ export const Chart: React.FC<{
 							return (
 								Math.floor(value * 100) / 100 +
 								', ' +
-								Math.abs(value - average) / sd +
+								Math.floor(Math.abs(value - average) / sd) +
 								'SD'
 							);
 						},
@@ -110,17 +110,19 @@ export const Chart: React.FC<{
 		};
 	}, []);
 
-	const chart_data = {
-		labels,
-		datasets: [
-			{
-				label: 'Value',
-				data: values,
-				backgroundColor: '#d63031',
-				borderColor: '#d63031',
-			},
-		],
-	};
+	const chart_data = useMemo(() => {
+		return {
+			labels,
+			datasets: [
+				{
+					label: 'Value',
+					data: values,
+					backgroundColor: '#d63031',
+					borderColor: '#d63031',
+				},
+			],
+		};
+	}, []);
 
 	return (
 		<Line options={options} data={chart_data} width={width} height={height} />

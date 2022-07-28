@@ -7,10 +7,10 @@ export const RemotionVideo: React.FC = () => {
 			<Composition
 				id="SDCalculatorWeb"
 				component={MyComposition}
-				durationInFrames={60}
+				durationInFrames={3600}
 				fps={30}
-				width={800}
-				height={600}
+				width={1920}
+				height={1080}
 			/>
 		</>
 	);

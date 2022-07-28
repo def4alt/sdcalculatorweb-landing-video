@@ -34,8 +34,18 @@ export const checkWestgardViolations = (
 			minusTrendCounter++;
 		}
 
-		if (Math.abs(value - average) > 3 * sd) {
-			violations.push('13S');
+		if (plusTrendCounter == 8 || minusTrendCounter == 8) {
+			plusTrendCounter = 0;
+			minusTrendCounter = 0;
+			violations.push('8X');
+			previousValue = value;
+			return;
+		}
+
+		if (plusSdCounter == 4 || minusSdCounter == 4) {
+			minusSdCounter = 0;
+			plusSdCounter = 0;
+			violations.push('41S');
 			previousValue = value;
 			return;
 		}
@@ -55,18 +65,8 @@ export const checkWestgardViolations = (
 			return;
 		}
 
-		if (plusTrendCounter == 8 || minusTrendCounter == 8) {
-			plusTrendCounter = 0;
-			minusTrendCounter = 0;
-			violations.push('8X');
-			previousValue = value;
-			return;
-		}
-
-		if (plusSdCounter == 4 || minusSdCounter == 4) {
-			minusSdCounter = 0;
-			plusSdCounter = 0;
-			violations.push('41S');
+		if (Math.abs(value - average) > 3 * sd) {
+			violations.push('13S');
 			previousValue = value;
 			return;
 		}
