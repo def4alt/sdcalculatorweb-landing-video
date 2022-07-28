@@ -38,17 +38,17 @@ export const checkWestgardViolations = (values: number[], sd: number) => {
 			return;
 		}
 
+		if (Math.abs(value - previousValue) > 4 * sd) {
+			violations.push('R4S');
+			previousValue = value;
+			return;
+		}
+
 		if (
 			Math.abs(value - average) > 2 * sd &&
 			Math.abs(previousValue - average) > 2 * sd
 		) {
 			violations.push('22S');
-			previousValue = value;
-			return;
-		}
-
-		if (Math.abs(value - previousValue) > 4 * sd) {
-			violations.push('R4S');
 			previousValue = value;
 			return;
 		}
