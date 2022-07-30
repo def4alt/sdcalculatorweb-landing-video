@@ -1,4 +1,4 @@
-import moment, {relativeTimeRounding} from 'moment';
+import moment from 'moment';
 import React, {useMemo} from 'react';
 import {random} from 'remotion';
 import {checkWestgardViolations} from '../utils/westgard';
@@ -35,10 +35,10 @@ const titles = [
 	'Ser Lvl2',
 ];
 
-export const Card: React.FC<{card_id: number}> = ({card_id}) => {
+export const Card: React.FC<{cardId: number}> = ({cardId}) => {
 	const width = 400;
 	const height = 250;
-	const average = (random(card_id) * 100) % 100;
+	const average = (random(cardId) * 100) % 100;
 	const sd = average / 5;
 	const amount = 8;
 	console.log(amount);
@@ -47,16 +47,15 @@ export const Card: React.FC<{card_id: number}> = ({card_id}) => {
 			[average].concat(
 				[...Array(amount - 1)].map((_, i) => {
 					return (
-						(random(card_id + i + 1) * (average + 3 * sd) +
-							(average - 2 * sd)) %
+						(random(cardId + i + 1) * (average + 3 * sd) + (average - 2 * sd)) %
 						100
 					);
 				})
 			),
-		[average, sd]
+		[average, sd, cardId]
 	);
 
-	let violations = useMemo(
+	const violations = useMemo(
 		() => checkWestgardViolations(values, average, sd),
 		[values, average, sd]
 	);
@@ -65,15 +64,15 @@ export const Card: React.FC<{card_id: number}> = ({card_id}) => {
 		() =>
 			[...Array(amount)].map(
 				(_, i) =>
-					moment(randomDate(card_id + i))
+					moment(randomDate(cardId + i))
 						.format('DD/MM/YY')
 						.toLocaleString() +
 					';' +
 					violations.at(i)
 			),
-		[violations]
+		[violations, cardId]
 	);
-	const title = titles.at((random(card_id) * titles.length) % 10);
+	const title = titles.at((random(cardId) * titles.length) % 10);
 
 	const hasWarning = useMemo(() => {
 		return violations.filter((t) => t.trim() !== '').length > 0;

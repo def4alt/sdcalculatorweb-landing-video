@@ -39,12 +39,12 @@ export const Chart: React.FC<{
 					ticks: {
 						minRotation: 0,
 						maxRotation: 90,
-						callback: function (
+						callback(
 							this: Scale<CoreScaleOptions>,
 							tickValue: string | number
 						) {
-							let value = Number(tickValue);
-							let label = this.getLabelForValue(value);
+							const value = Number(tickValue);
+							const label = this.getLabelForValue(value); // eslint-disable-line react/no-this-in-sfc
 							return label.split(';')[0];
 						},
 					},
@@ -56,12 +56,12 @@ export const Chart: React.FC<{
 					type: 'category',
 					grid: {drawOnChartArea: false},
 					ticks: {
-						callback: function (
+						callback(
 							this: Scale<CoreScaleOptions>,
 							tickValue: string | number
 						) {
-							let value = Number(tickValue);
-							let label = this.getLabelForValue(value);
+							const value = Number(tickValue);
+							const label = this.getLabelForValue(value); // eslint-disable-line react/no-this-in-sfc
 							return label.split(';')[1];
 						},
 						color: '#c62828',
@@ -76,8 +76,8 @@ export const Chart: React.FC<{
 					ticks: {
 						stepSize: sd,
 						callback: (tickValue: string | number) => {
-							let value = Number(tickValue);
-							if (value == average) {
+							const value = Number(tickValue);
+							if (value === average) {
 								return Math.floor(value * 100) / 100 + ', M';
 							}
 							return (
@@ -108,9 +108,9 @@ export const Chart: React.FC<{
 				},
 			},
 		};
-	}, []);
+	}, [average, sd]);
 
-	const chart_data = useMemo(() => {
+	const chartData = useMemo(() => {
 		return {
 			labels,
 			datasets: [
@@ -122,9 +122,9 @@ export const Chart: React.FC<{
 				},
 			],
 		};
-	}, []);
+	}, [labels, values]);
 
 	return (
-		<Line options={options} data={chart_data} width={width} height={height} />
+		<Line options={options} data={chartData} width={width} height={height} />
 	);
 };

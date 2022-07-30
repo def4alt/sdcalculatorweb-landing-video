@@ -13,7 +13,7 @@ export const CardList: React.FC = () => {
 	return (
 		<div className="card-list" style={{marginTop: margin}}>
 			{[...Array(50)].map((_, i) => {
-				return <Card card_id={i * 10} key={i} />;
+				return <Card key={i} cardId={i * 10} />;
 			})}
 		</div>
 	);

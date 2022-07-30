@@ -3,13 +3,13 @@ export const checkWestgardViolations = (
 	average: number,
 	sd: number
 ) => {
-	// if two consecutive numbers exceed 2S
+	// If two consecutive numbers exceed 2S
 	// if difference between two consecutive numbers is greater/equal to 3S
 	// if one of the two consecutive numbers is over 2S and other is lower than -2S
 	// if four consecutive numbers are greater than 1S
 	// if eight consecutive numbers form a trend
 
-	let violations: string[] = [];
+	const violations: string[] = [];
 
 	let plusSdCounter = 0;
 	let minusSdCounter = 0;
@@ -34,7 +34,7 @@ export const checkWestgardViolations = (
 			minusTrendCounter++;
 		}
 
-		if (plusTrendCounter == 8 || minusTrendCounter == 8) {
+		if (plusTrendCounter === 8 || minusTrendCounter === 8) {
 			plusTrendCounter = 0;
 			minusTrendCounter = 0;
 			violations.push('8X');
@@ -42,7 +42,7 @@ export const checkWestgardViolations = (
 			return;
 		}
 
-		if (plusSdCounter == 4 || minusSdCounter == 4) {
+		if (plusSdCounter === 4 || minusSdCounter === 4) {
 			minusSdCounter = 0;
 			plusSdCounter = 0;
 			violations.push('41S');
