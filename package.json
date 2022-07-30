@@ -4,7 +4,7 @@
 	"description": "A video made for SDCalculatorWeb landing page with Remotion",
 	"scripts": {
 		"start": "remotion preview src/index.tsx",
-		"build": "remotion render src/index.tsx SDCalculatorWeb out/video.mp4",
+		"build": "remotion render src/index.tsx SDCalculatorWeb out/video.webm",
 		"upgrade": "remotion upgrade",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc"
 	},

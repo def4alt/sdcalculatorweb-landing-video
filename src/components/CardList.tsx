@@ -6,13 +6,13 @@ export const CardList: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {durationInFrames} = useVideoConfig();
 
-	const margin = interpolate(frame, [0, durationInFrames], [-500 * 15, 0], {
+	const margin = interpolate(frame, [0, durationInFrames], [-500 * 5, 0], {
 		extrapolateRight: 'clamp',
 	});
 
 	return (
 		<div className="card-list" style={{marginTop: margin}}>
-			{[...Array(100)].map((_, i) => {
+			{[...Array(50)].map((_, i) => {
 				return <Card card_id={i * 10} key={i} />;
 			})}
 		</div>
