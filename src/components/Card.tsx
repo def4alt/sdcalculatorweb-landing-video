@@ -4,8 +4,6 @@ import {random} from 'remotion';
 import {checkWestgardViolations} from '../utils/westgard';
 import {Chart} from './Chart';
 
-import '../styles/card.css';
-
 const randomDate = (id: number) => {
 	const startDate = new Date(new Date().getFullYear(), 1, 1);
 	const endDate = new Date();
@@ -87,14 +85,23 @@ export const Card: React.FC<{cardId: number}> = ({cardId}) => {
 		height,
 	};
 
+	const cv = useMemo(() => Math.floor((sd / average) * 100 * 100) / 100, []);
+
 	return (
-		<div className={hasWarning ? 'card card_red' : 'card'}>
-			<div className="card__header">
-				<div className="card__title">{title}</div>
+		<div
+			className={`w-5/12 h-80 border-2 bg-white rounded-md flex flex-col justify-center align-middle items-center ${
+				hasWarning ? 'border-red-500' : ''
+			}`}
+		>
+			<div className="w-full flex justify-center align-middle items-center h-20">
+				<p className="text-center text-lg">{title}</p>
 			</div>
-			<div className="card__chart">
+			<div className="w-full h-full px-4 flex justify-center align-middle items-center">
 				<Chart data={data} />
 			</div>
+			<p className="mb-4 text-sm text-gray-500 ml-4 h-8">{`SD ${
+				Math.floor(sd * 100) / 100
+			} CV ${cv}`}</p>
 		</div>
 	);
 };

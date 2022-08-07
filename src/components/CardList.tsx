@@ -1,5 +1,4 @@
 import {Card} from './Card';
-import '../styles/card-list.css';
 import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 
 export const CardList: React.FC = () => {
@@ -11,7 +10,10 @@ export const CardList: React.FC = () => {
 	});
 
 	return (
-		<div className="card-list" style={{marginTop: margin}}>
+		<div
+			className={`w-full px-4 flex flex-row bg-white flex-wrap gap-6 justify-center align-top items-center`}
+			style={{marginTop: margin}}
+		>
 			{[...Array(50)].map((_, i) => {
 				return <Card key={i} cardId={i * 10} />;
 			})}

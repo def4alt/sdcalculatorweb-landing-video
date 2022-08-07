@@ -1,6 +1,8 @@
 import {Composition} from 'remotion';
 import {MyComposition} from './Composition';
 
+import './style.css';
+
 export const RemotionVideo: React.FC = () => {
 	return (
 		<>
